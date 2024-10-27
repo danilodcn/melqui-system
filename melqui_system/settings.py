@@ -11,8 +11,13 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 
+import os
 from pathlib import Path
 from urllib.parse import urlparse
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
@@ -75,13 +80,20 @@ TEMPLATES = [
 WSGI_APPLICATION = 'melqui_system.wsgi.application'
 
 
+database_url = os.environ['DATABASE_URL']
+parsed_url = urlparse(database_url)
+
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': parsed_url.path[1:],
+        'USER': parsed_url.username,
+        'PASSWORD': parsed_url.password,
+        'HOST': parsed_url.hostname,
+        'PORT': parsed_url.port,
     }
 }
 
