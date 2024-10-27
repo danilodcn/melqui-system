@@ -24,3 +24,34 @@ def cell_phone_validator(value):
             code='invalid',
             params={'value': value},
         )
+
+
+def validate_cpf(value):
+    if not __is_valid_cpf(value):
+        raise ValidationError(
+            'Numero do CPF invalido', code='invalid', params={'value': value}
+        )
+    return True
+
+
+def __is_valid_cpf(cpf):
+    # Remover caracteres não numéricos
+    cpf = re.sub(r'\D', '', cpf)
+
+    # Verificar se o CPF tem 11 dígitos ou se é uma sequência inválida
+    if len(cpf) != 11 or cpf == cpf[0] * 11:
+        return False
+
+    # Validar primeiro dígito verificador
+    soma = sum(int(cpf[i]) * (10 - i) for i in range(9))
+    primeiro_digito = (soma * 10 % 11) % 10
+    if primeiro_digito != int(cpf[9]):
+        return False
+
+    # Validar segundo dígito verificador
+    soma = sum(int(cpf[i]) * (11 - i) for i in range(10))
+    segundo_digito = (soma * 10 % 11) % 10
+    if segundo_digito != int(cpf[10]):
+        return False
+
+    return True

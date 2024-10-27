@@ -35,8 +35,12 @@ SECRET_KEY = (
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['rare-pants-create.loca.lt', 'localhost', "seven-rules-allow.loca.lt"]
+CSRF_TRUSTED_ORIGINS = [
+    'https://*',
+    'http://*',
+    'https://*',
+]
 
 # Application definition
 
@@ -47,6 +51,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
+    'crispy_bootstrap4',
+    'rangefilter',
+    'import_export',
     'melqui_system.apps.subscription',
 ]
 
@@ -126,6 +134,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'pt-br'
 
+DATE_FORMAT = 'd/m/Y'
+
 TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
@@ -142,3 +152,10 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Configurações do Crispy
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap4'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

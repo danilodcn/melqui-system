@@ -16,7 +16,24 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.utils.translation import gettext_lazy
+
+from melqui_system.apps.subscription.views import (
+    RegistrationSuccessView,
+    RegistrationView,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('registro/', RegistrationView.as_view()),
+    path(
+        'thanks/<int:id>/',
+        RegistrationSuccessView.as_view(),
+        name='registration-thanks',
+    ),
 ]
+
+
+admin.site.site_title = gettext_lazy("Django site admin")
+admin.site.site_header = "Melqui"
+admin.site.index_title = gettext_lazy("Site administration")

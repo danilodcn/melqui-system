@@ -6,50 +6,13 @@ from django.db import models
 if TYPE_CHECKING:
     from django.contrib.auth.models import User   # noqa
 
-from melqui_system.apps.subscription.validators import cell_phone_validator
+from melqui_system.apps.subscription.validators import (
+    cell_phone_validator,
+    validate_cpf,
+)
 
 
 class Subscription(models.Model):
-    cpf = models.CharField('CPF', max_length=20)
-    full_name = models.CharField('Nome Completo', max_length=255)
-    email = models.CharField(
-        'Email', validators=[validate_email], null=True, blank=True
-    )
-
-    cell_phone = models.CharField(
-        'Numero de Telefone (WhatApp)',
-        max_length=32,
-        validators=[cell_phone_validator],
-    )
-
-    birthday = models.DateField('Data de aniversario')
-
-    indicated_by = models.ForeignKey(
-        'Subscription',
-        null=True,
-        blank=True,
-        on_delete=models.PROTECT,
-        related_name='indications',
-        verbose_name='Indicado por',
-    )  # type: Subscription | None
-
-    created_at = models.DateTimeField(
-        'Data de criação', editable=False, auto_now_add=True
-    )
-    updated_at = models.DateTimeField(
-        'Data de atualização', editable=False, auto_now=True
-    )
-
-    class Meta:
-        verbose_name = 'Inscrição'
-        verbose_name_plural = 'Inscrições'
-        ordering = ('pk',)
-
-    def __str__(self) -> str:
-        return f'{self.pk} - {self.full_name}'
-
-
-class SubscriptionAddress(models.Model):
     class StatesChoices(models.TextChoices):
         AC = 'AC', 'Acre'
         AL = 'AL', 'Alagoas'
@@ -79,15 +42,34 @@ class SubscriptionAddress(models.Model):
         SE = 'SE', 'Sergipe'
         TO = 'TO', 'Tocantins'
 
-    subscription = models.OneToOneField(
-        Subscription,
-        on_delete=models.PROTECT,
-        verbose_name='inscrição',
-        related_name='address',
+    cpf = models.CharField('CPF', max_length=20, validators=(validate_cpf,))
+    titulo = models.CharField('Titulo', max_length=20)
+    rg = models.CharField('RG', max_length=20)
+    full_name = models.CharField('Nome Completo', max_length=255)
+    email = models.CharField(
+        'Email', validators=[validate_email], null=True, blank=True
     )
 
+    cell_phone = models.CharField(
+        'Numero de Telefone (WhatApp)',
+        max_length=32,
+        validators=[cell_phone_validator],
+    )
+
+    birthday = models.DateField('Data de aniversario')
+
+    indicated_by = models.ForeignKey(
+        'Subscription',
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name='indications',
+        verbose_name='Indicado por',
+    )  # type: Subscription | None
+
+    cep = models.CharField('CEP')
+    state = models.CharField('Estado', choices=StatesChoices.choices)
     city = models.CharField('Cidade')
-    state = models.CharField('Cidade', choices=StatesChoices.choices)
     neighborhood = models.CharField('Bairro')
     street = models.CharField('Rua')
     number = models.CharField('Numero')
@@ -100,10 +82,12 @@ class SubscriptionAddress(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Endereço'
+        verbose_name = 'Inscrição'
+        verbose_name_plural = 'Inscrições'
+        ordering = ('pk',)
 
     def __str__(self) -> str:
-        return f'{self.street} - {self.city}/{self.state}'
+        return f'{self.pk} - {self.full_name}'
 
 
 class SubscriptionReview(models.Model):
