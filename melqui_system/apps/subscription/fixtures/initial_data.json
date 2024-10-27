@@ -1,0 +1,20 @@
+[
+{
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$ANiKHLYcs8PctkiP4aNLPB$W332XefUxb08SB9fIEO+3XWlgcZ2z6n7XBhJJgxIgOI=",
+        "last_login": "2024-10-27T13:49:20.809Z",
+        "is_superuser": true,
+        "username": "danilodcn",
+        "first_name": "",
+        "last_name": "",
+        "email": "admin@user.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2024-10-27T13:48:56.107Z",
+        "groups": [],
+        "user_permissions": []
+    }
+}
+]
