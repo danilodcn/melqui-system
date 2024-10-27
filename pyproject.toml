@@ -12,6 +12,11 @@ python-dotenv = "^1.0.1"
 schema = "^0.7.7"
 
 
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.7.1"
+blue = "^0.9.1"
+isort = "^5.13.2"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
